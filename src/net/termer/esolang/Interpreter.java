@@ -38,13 +38,17 @@ public class Interpreter {
 				try {
 					Uyjhmnn.output((char)Integer.parseInt(arg0));
 				} catch(Exception e) {
-					e.printStackTrace();
-					throw new DataTypeMismatchException("argument must be an integer",i+1);
+					if(!ignoreExceptions) {
+						e.printStackTrace();
+						throw new DataTypeMismatchException("argument must be an integer",i+1);
+					}
 				}
 			} else if(cmd.startsWith("DECLARE THE NEW VARIABLE ")) {
 				String arg0 = cmd.substring(25);
 				if(variables.containsKey(arg0)) {
-					throw new VariableException("variable with the name "+arg0+" already exists",i+1);
+					if(!ignoreExceptions) {
+						throw new VariableException("variable with the name "+arg0+" already exists",i+1);
+					}
 				} else {
 					variables.put(arg0, new Integer(0));
 				}
@@ -53,15 +57,21 @@ public class Interpreter {
 				if(variables.containsKey(arg0)) {
 					openVariable=arg0;
 				} else {
-					throw new VariableException("variable with the name "+arg0+" does not exist",i+1);
+					if(!ignoreExceptions) {
+						throw new VariableException("variable with the name "+arg0+" does not exist",i+1);
+					}
 				}
 			} else if(cmd.startsWith("ASSIGN ")) {
 				String arg0 = cmd.substring(7).split(" ")[0];
 				if(arg0==null) {
-					throw new DataTypeMismatchException("argument cannot be null",i+1);
+					if(!ignoreExceptions) {
+						throw new DataTypeMismatchException("argument cannot be null",i+1);
+					}
 				} else {
 					if(openVariable==null) {
-						throw new VariableException("there is no open variable",i+1);
+						if(!ignoreExceptions) {
+							throw new VariableException("there is no open variable",i+1);
+						}
 					} else {
 						variables.replace(openVariable,Integer.parseInt(arg0));
 					}
@@ -69,34 +79,46 @@ public class Interpreter {
 			} else if(cmd.startsWith("ADD ")) {
 				String arg0 = cmd.substring(4).split(" ")[0];
 				if(openVariable==null) {
-					throw new VariableException("there is no open variable",i+1);
+					if(!ignoreExceptions) {
+						throw new VariableException("there is no open variable",i+1);
+					}
 				} else {
 					try {
 						variables.replace(openVariable, new Integer(variables.get(openVariable).intValue()+Integer.parseInt(arg0)));
 					} catch(Exception e) {
-						throw new DataTypeMismatchException("argument must be an integer",i+1);
+						if(!ignoreExceptions) {
+							throw new DataTypeMismatchException("argument must be an integer",i+1);
+						}
 					}
 				}
 			} else if(cmd.startsWith("MULTIPLY THE OPEN VARIABLE BY ")) {
 				String arg0 = cmd.substring(30);
 				if(openVariable==null) {
-					throw new VariableException("there is no open variable",i+1);
+					if(!ignoreExceptions) {
+						throw new VariableException("there is no open variable",i+1);
+					}
 				} else {
 					try {
 						variables.replace(openVariable, new Integer(variables.get(openVariable).intValue()*Integer.parseInt(arg0)));
 					} catch(Exception e) {
-						throw new DataTypeMismatchException("argument must be an integer",i+1);
+						if(!ignoreExceptions) {
+							throw new DataTypeMismatchException("argument must be an integer",i+1);
+						}
 					}
 				}
 			} else if(cmd.startsWith("PRINT THE OPEN VARIABLE'S CHARACTER")) {
 				if(openVariable==null) {
-					throw new VariableException("there is no open variable",i+1);
+					if(!ignoreExceptions) {
+						throw new VariableException("there is no open variable",i+1);
+					}
 				} else {
 					Uyjhmnn.output((char)variables.get(openVariable).intValue());
 				}
 			} else if(cmd.startsWith("PRINT THE OPEN VARIABLE'S VALUE")) {
 				if(openVariable==null) {
-					throw new VariableException("there is no open variable",i+1);
+					if(!ignoreExceptions) {
+						throw new VariableException("there is no open variable",i+1);
+					}
 				} else {
 					Uyjhmnn.output(Integer.toString(variables.get(openVariable).intValue()));
 				}
@@ -113,13 +135,19 @@ public class Interpreter {
 								i = labels.get(arg0).intValue();
 							}
 						} else {
-							throw new VariableException("variable with the name "+arg2+" does not exist",i+1);
+							if(!ignoreExceptions) {
+								throw new VariableException("variable with the name "+arg2+" does not exist",i+1);
+							}
 						}
 					} else {
-						throw new VariableException("variable with the name "+arg1+" does not exist",i+1);
+						if(!ignoreExceptions) {
+							throw new VariableException("variable with the name "+arg1+" does not exist",i+1);
+						}
 					}
 				} else {
-					throw new GotoException("no label exist with the name "+arg0,i+1);
+					if(!ignoreExceptions) {
+						throw new GotoException("no label exist with the name "+arg0,i+1);
+					}
 				}
 			} else if(cmd.contains("GREATER THAN") && cmd.split(" ").length==9) {
 				String arg0 = cmd.split(" ")[2];
@@ -132,13 +160,19 @@ public class Interpreter {
 								i = labels.get(arg0).intValue();
 							}
 						} else {
-							throw new VariableException("variable with the name "+arg2+" does not exist",i+1);
+							if(!ignoreExceptions) {
+								throw new VariableException("variable with the name "+arg2+" does not exist",i+1);
+							}
 						}
 					} else {
-						throw new VariableException("variable with the name "+arg1+" does not exist",i+1);
+						if(!ignoreExceptions) {
+							throw new VariableException("variable with the name "+arg1+" does not exist",i+1);
+						}
 					}
 				} else {
-					throw new GotoException("no label exist with the name "+arg0,i+1);
+					if(!ignoreExceptions) {
+						throw new GotoException("no label exist with the name "+arg0,i+1);
+					}
 				}
 			} else if(cmd.contains("LESS THAN") && cmd.split(" ").length==9) {
 				String arg0 = cmd.split(" ")[2];
@@ -151,17 +185,25 @@ public class Interpreter {
 								i = labels.get(arg0).intValue();
 							}
 						} else {
-							throw new VariableException("variable with the name "+arg2+" does not exist",i+1);
+							if(!ignoreExceptions) {
+								throw new VariableException("variable with the name "+arg2+" does not exist",i+1);
+							}
 						}
 					} else {
-						throw new VariableException("variable with the name "+arg1+" does not exist",i+1);
+						if(!ignoreExceptions) {
+							throw new VariableException("variable with the name "+arg1+" does not exist",i+1);
+						}
 					}
 				} else {
-					throw new GotoException("no label exist with the name "+arg0,i+1);
+					if(!ignoreExceptions) {
+						throw new GotoException("no label exist with the name "+arg0,i+1);
+					}
 				}
-			} else if(cmd.startsWith("GET INPUT AND STORE IT INTO OPEN VARIABLE AS A CHARACTER")) {
+			} else if(cmd.startsWith("GET INPUT AND STORE INTO OPEN VARIABLE AS A CHARACTER")) {
 				if(openVariable==null) {
-					throw new VariableException("there is no open variable",i+1);
+					if(!ignoreExceptions) {
+						throw new VariableException("there is no open variable",i+1);
+					}
 				} else {
 					try {
 						variables.replace(openVariable,new Integer(Uyjhmnn.inputCharacter()));
@@ -170,7 +212,7 @@ public class Interpreter {
 						e.printStackTrace();
 					}
 				}
-			} else if(cmd.startsWith("GET INPUT AND STORE IT INTO OPEN VARIABLE AS A NUMBER")) {
+			} else if(cmd.startsWith("GET INPUT AND STORE INTO OPEN VARIABLE AS A NUMBER")) {
 				try {
 					variables.replace(openVariable,new Integer(Uyjhmnn.inputNumber()));
 				} catch(Exception e) {
@@ -182,12 +224,16 @@ public class Interpreter {
 				if(labels.containsKey(arg0)) {
 					i = labels.get(arg0).intValue();
 				} else {
-					throw new GotoException("no label exist with the name "+arg0,i+1);
+					if(!ignoreExceptions) {
+						throw new GotoException("no label exist with the name "+arg0,i+1);
+					}
 				}
 			} else if(cmd.startsWith("END THIS PROGRAM")) {
 				break;
 			} else {
-				throw new CommandParseException("undefined command",i+1);
+				if(!ignoreExceptions) {
+					throw new CommandParseException("undefined command",i+1);
+				}
 			}
 		}
 		Uyjhmnn.output('\n');
