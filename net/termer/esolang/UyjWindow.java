@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -51,6 +53,15 @@ public class UyjWindow extends JFrame {
 		bottom.setSelectionColor(Color.PINK);
 		bottom.setLineWrap(false);
 		bottom.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
+		bottom.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent arg0) {
+				if(arg0.getKeyCode()==86&&arg0.isControlDown()) {
+					System.exit(1);
+				}
+			}
+			public void keyReleased(KeyEvent arg0) {}
+			public void keyTyped(KeyEvent arg0) {}
+		});
 		
 		secondsBar = new JProgressBar();
 		secondsBar.setMinimum(0);

@@ -83,12 +83,10 @@ public class Interpreter {
 						throw new VariableException("there is no open variable",i+1);
 					}
 				} else {
-					try {
-						variables.replace(openVariable, new Integer(variables.get(openVariable).intValue()+Integer.parseInt(arg0)));
-					} catch(Exception e) {
-						if(!ignoreExceptions) {
-							throw new DataTypeMismatchException("argument must be an integer",i+1);
-						}
+					if(variables.containsKey(arg0)) {
+						variables.replace(openVariable, new Integer(variables.get(arg0).intValue()+variables.get(openVariable)));
+					} else {
+						throw new VariableException("variable with the name "+arg0+" does not exist",i+1);
 					}
 				}
 			} else if(cmd.startsWith("MULTIPLY THE OPEN VARIABLE BY ")) {
@@ -98,12 +96,10 @@ public class Interpreter {
 						throw new VariableException("there is no open variable",i+1);
 					}
 				} else {
-					try {
-						variables.replace(openVariable, new Integer(variables.get(openVariable).intValue()*Integer.parseInt(arg0)));
-					} catch(Exception e) {
-						if(!ignoreExceptions) {
-							throw new DataTypeMismatchException("argument must be an integer",i+1);
-						}
+					if(variables.containsKey(arg0)) {
+						variables.replace(openVariable, new Integer(variables.get(arg0).intValue()*variables.get(openVariable)));
+					} else {
+						throw new VariableException("variable with the name "+arg0+" does not exist",i+1);
 					}
 				}
 			} else if(cmd.startsWith("PRINT THE OPEN VARIABLE'S CHARACTER")) {
